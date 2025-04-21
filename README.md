@@ -2,12 +2,20 @@
 This project provides a modern, user-friendly web interface for generating AI images using Stable Diffusion WebUI API. It utilizes an AJAX-based frontend with real-time interaction and a CORS-safe PHP proxy backend to seamlessly communicate with the local API (http://127.0.0.1:7860).
 
 
+
+
+
 🧠 Features
 🔥 Real-time image generation via txt2img endpoint.
 
 ✅ Negative prompt assistant with selectable pre-defined bad keywords.
 
 🎛️ Prompt controls: CFG scale, steps, resolution sliders, sampler selection.
+
+
+
+
+
 
 🌟 Support for:
 
@@ -24,6 +32,13 @@ Upscaling (via extra-single-image)
 🌙 Dark mode interface (if integrated).
 
 💡 Easy to customize and expand.
+
+
+
+
+
+
+
 
 💡 How It Works
 Frontend (HTML + JS)
@@ -52,3 +67,9 @@ Local installation of Stable Diffusion WebUI (AUTOMATIC1111)
 PHP 7.x+ server (e.g., XAMPP, MAMP, or built-in server)
 
 Web browser (Chrome, Firefox, etc.)
+
+
+
+
+
+
