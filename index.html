@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedram Ghanbari</title>
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #fde8e8;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        .container {
+            
+            max-width: 700px;
+            margin: 10px auto;
+            padding: 50px;
+            background-color: rgb(244, 242, 252);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            
+        }
+        input, textarea, select, button {
+            background-color: rgb(255, 240, 240);
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #0e092c;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input[type=range] {
+            width: 100%;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #6101bb;
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .images img {
+            width: 100%;
+            max-width:80%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .images img:hover {
+            transform: scale(1.05);
+        }
+        .history-box {
+            margin-top: 20px;
+            display: none;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .history-entry {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .history-entry strong {
+            color: #333;
+        }
+        .history-toggle {
+            cursor: pointer;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .history-toggle:hover {
+            text-decoration: none;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+        }
+        .loading.active {
+            display: block;
+            font-size: 18px;
+            color: #333;
+        }
+        .clear-btn, .download-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .clear-btn:hover, .download-btn:hover {
+            background-color: #c82333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 70%;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #aaa;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 100%;
+        }
+        .checkbox-group div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 100%;
+        }
+        .checkbox-group label {
+            text-align: center;
+            color: rgb(0, 17, 250);
+            font-size: 18px;
+            display: inline-flex;
+            margin-right: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+
+            margin-right: 10px;
+        }
+        .input-group-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10%;
+            width: 100%;
+        }
+        .input-group-line div {
+            
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 45%;
+        }
+        .checkbox-group-prompt {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 100%;
+        }
+        .checkbox-group-prompt div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 100%;
+        }
+        .checkbox-group-prompt label {
+            text-align: center;
+            color: rgb(0, 17, 250);
+            font-size: 18px;
+            display: inline-flex;
+            margin-right: 10px;
+        }
+        .checkbox-group-prompt input[type="checkbox"] {
+
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Pedram Ghanbari</h2>
+    <form id="generateForm">
+        <div class="input-group">
+            <label for="prompt">Prompt:</label>
+            <textarea id="prompt" name="prompt" placeholder="Enter your prompt here" required></textarea>
+        </div>
+
+
+        <div class="checkbox-group-prompt">
+            <div>
+                <label><input type="checkbox" class="prompt-option" value="1girl , (beautiful face)  "> girl</label><br>
+                <label><input type="checkbox" class="prompt-option" value="high detailed , 8k , extra quality "> detailed</label><br>
+                <label><input type="checkbox" class="prompt-option" value="nsfw"> nsfw</label><br>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+
+        <div class="input-group">
+            <label for="neg_prompt">Negative Prompt (optional):</label>
+            <textarea id="neg_prompt" name="neg_prompt" placeholder="Optional negative prompt"></textarea>
+        </div>
+
+
+        <div class="checkbox-group">
+            <div>
+                <label><input type="checkbox" class="neg-prompt-option" value="Blurry"> Blurry</label><br>
+                <label><input type="checkbox" class="neg-prompt-option" value="Distorted"> Distorted</label><br>
+                <label><input type="checkbox" class="neg-prompt-option" value="Noisy"> Noisy</label><br>
+                <label><input type="checkbox" class="neg-prompt-option" value="Grainy"> Grainy</label><br>
+                <label><input type="checkbox" class="neg-prompt-option" value="Unclear"> Unclear</label><br>
+                <label><input type="checkbox" class="neg-prompt-option" value="nsfw , undressed , adult contant"> nsfw</label><br>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <label >Steps: <span id="steps-val">30</span></label>
+        <input type="range" name="steps" min="1" max="100" value="30" oninput="document.getElementById('steps-val').textContent = this.value">
+    
+        <label>CFG Scale: <span id="cfg-val">7.5</span></label>
+        <input type="range" name="cfg" min="1" max="20" step="0.5" value="7.5" oninput="document.getElementById('cfg-val').textContent = this.value">
+    
+        <div class="input-group">
+            <label for="width">Width: <span id="widthValue">512</span></label>
+            <input type="range" id="width" name="width" min="64" max="2048" step="64" value="512" oninput="document.getElementById('widthValue').textContent = this.value">
+        </div>
+        <div class="input-group">
+            <label for="height">Height: <span id="heightValue">512</span></label>
+            <input type="range" id="height" name="height" min="64" max="2048" step="64" value="512" oninput="document.getElementById('heightValue').textContent = this.value">
+        </div>
+
+
+        <div class="input-group-line">
+            <div>
+                <label for="num_images">Number of Images:</label>
+                <input type="number" id="num_images" name="num_images" value="1" min="1" max="8" required>
+            </div>
+            <div>
+             <label for="sampler">Sampler:</label>
+                <select id="sampler" name="sampler" required>
+                    <option value="DPM++ 2M Karras">DPM++ 2M Karras</option>
+                    <option value="DPM++ 2M">DPM++ 2M</option>
+                    <option value="Euler">Euler</option>
+                    <option value="Euler a">Euler a</option>
+                    <option value="LMS">LMS</option>
+                    <option value="Heun">Heun</option>
+                    <option value="DDIM">DDIM</option>
+                    <option value="PLMS">PLMS</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit">Generate Image</button>
+    </form>
+
+    <div class="loading" id="loading">Generating your image, please wait...</div>
+
+    <div class="images" id="imagesContainer"></div>
+
+    <div class="history-box" id="historyBox">
+        <h3>History</h3>
+        <div id="historyContainer"></div>
+        <button class="clear-btn" id="clearHistoryBtn">Clear History</button>
+    </div>
+
+    <button class="history-toggle" id="toggleHistoryBtn">Toggle History</button>
+</div>
+
+<div id="imageModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <img id="modalImage" src="" alt="Large view">
+        <a id="downloadLink" href="" download>
+            <button class="download-btn">Download Image</button>
+        </a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('generateForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        generateImage();
+    });
+
+    document.getElementById('clearHistoryBtn').addEventListener('click', function() {
+        fetch('ajax.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_history' })
+        }).then(response => response.json()).then(data => {
+            alert(data.message);
+            loadHistory();
+        });
+    });
+
+    document.getElementById('toggleHistoryBtn').addEventListener('click', function() {
+        const historyBox = document.getElementById('historyBox');
+        historyBox.style.display = (historyBox.style.display === 'none' || historyBox.style.display === '') ? 'block' : 'none';
+    });
+
+    document.getElementById('modalClose').addEventListener('click', function() {
+        document.getElementById('imageModal').style.display = 'none';
+    });
+
+    function generateImage() {
+        const formData = new FormData(document.getElementById('generateForm'));
+        const data = {
+            prompt: formData.get('prompt'),
+            neg_prompt: formData.get('neg_prompt'),
+            steps: formData.get('steps'),
+            cfg: formData.get('cfg'),
+            width: formData.get('width'),
+            height: formData.get('height'),
+            num_images: formData.get('num_images'),
+            sampler: formData.get('sampler')
+        };
+
+        document.getElementById('loading').classList.add('active');
+
+        fetch('ajax.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(response => response.json()).then(data => {
+            document.getElementById('loading').classList.remove('active');
+            if (data.status === 'success') {
+                displayImages(data.images);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        }).catch(error => {
+            document.getElementById('loading').classList.remove('active');
+            alert('Error: ' + error.message);
+        });
+    }
+
+    function displayImages(images) {
+        const imagesContainer = document.getElementById('imagesContainer');
+        imagesContainer.innerHTML = '';
+        images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image;
+            imgElement.addEventListener('click', function() {
+                openModal(image);
+            });
+            imagesContainer.appendChild(imgElement);
+        });
+    }
+
+    function openModal(image) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const downloadLink = document.getElementById('downloadLink');
+
+        modal.style.display = 'block';
+        modalImage.src = image;
+        downloadLink.href = image;
+    }
+
+    function loadHistory() {
+        fetch('ajax.php', {
+            method: 'GET'
+        }).then(response => response.json()).then(data => {
+            const historyContainer = document.getElementById('historyContainer');
+            historyContainer.innerHTML = '';
+            data.history.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'history-entry';
+                entryDiv.innerHTML = `
+                    <strong>${entry.time}</strong><br>
+                    <em>Prompt:</em> ${entry.prompt}<br>
+                    <em>Negative Prompt:</em> ${entry.neg_prompt}<br>
+                    <em>Params:</em> ${JSON.stringify(entry.params)}<br>
+                `;
+                entry.images.forEach(image => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image;
+                    imgElement.addEventListener('click', () => openModal(image));
+                    entryDiv.appendChild(imgElement);
+                });
+                historyContainer.appendChild(entryDiv);
+            });
+        });
+    }
+
+    loadHistory();
+
+    const checkboxes = document.querySelectorAll('.neg-prompt-option');
+    const negPromptField = document.getElementById('neg_prompt');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const selectedWords = [];
+            checkboxes.forEach(box => {
+                if (box.checked) {
+                    selectedWords.push(box.value);
+                }
+            });
+
+            // Update the Negative Prompt textarea with the selected words
+            negPromptField.value = selectedWords.join(', ');
+        });
+    });
+
+    const checkboxe = document.querySelectorAll('.prompt-option');
+    const PromptField = document.getElementById('prompt');
+
+    checkboxe.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const selectedWords = [];
+            checkboxe.forEach(box => {
+                if (box.checked) {
+                    selectedWords.push(box.value);
+                }
+            });
+
+            // Update the Prompt textarea with the selected words
+            PromptField.value = selectedWords.join(', ');
+        });
+    });
+</script>
+
+</body>
+</html>
